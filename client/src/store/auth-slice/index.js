@@ -27,15 +27,31 @@ export const loginUser = createAsyncThunk(
   "/auth/login",
 
   async (formData) => {
-    const response = await axios.post(
-      "http://localhost:5000/api/auth/login",
-      formData,
-      {
-        withCredentials: true,
-      }
-    );
+    const url = "http://localhost:5000/api/auth/login"; // Define the URL
 
-    return response.data;
+    // Print the URL and the data being sent
+    console.log("Request URL:", url);
+    console.log("Form Data being sent:", formData);
+
+    try {
+      // Make the POST request
+      const response = await axios.post(
+        url,
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
+
+      // Print the entire response
+      console.log("Response Data:", response.data);
+
+      return response.data; // Return the data as usual
+    } catch (error) {
+      // Print the error if any
+      console.error("Error occurred during login:", error);
+      throw error; // Re-throw the error to handle it in the thunk
+    }
   }
 );
 
@@ -59,20 +75,30 @@ export const checkAuth = createAsyncThunk(
   "/auth/checkauth",
 
   async () => {
-    const response = await axios.get(
-      "http://localhost:5000/api/auth/check-auth",
-      {
-        withCredentials: true,
-        headers: {
-          "Cache-Control":
-            "no-store, no-cache, must-revalidate, proxy-revalidate",
-        },
-      }
-    );
+    // Print the URL and request details
+    const url = "http://localhost:5000/api/auth/check-auth";
+    console.log("Request URL:", url);
+    
+    const config = {
+      withCredentials: true,
+      headers: {
+        "Cache-Control":
+          "no-store, no-cache, must-revalidate, proxy-revalidate",
+      },
+    };
+
+    console.log("Request Config:", JSON.stringify(config));
+
+    // Make the request
+    const response = await axios.get(url, config);
+
+    // Print the response received
+    console.log("Response received:", response.data);
 
     return response.data;
   }
 );
+
 
 const authSlice = createSlice({
   name: "auth",
