@@ -46,6 +46,7 @@ function ProductImageUpload({
   }
 
   async function uploadImageToCloudinary() {
+    console.log("uploadImageToCloudinary");
     setImageLoadingState(true);
     const data = new FormData();
     data.append("my_file", imageFile);
